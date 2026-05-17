@@ -27,8 +27,13 @@ const LOCAL_IP = "本机ip地址";
 WEB_URL = "你的index地址"
 DELAY_SECONDS = 20  # 打开网页后等待20秒
 ```
-4.启动**identify-link.py**并修改此处url(需修改该文件其他某些东西，请访问该目录下**README.md**)  
-5.启动后会出现以下内容
+4.**powershell**在js目录运行**node websocketNode.js**,出现以下则代表成功
+```
+PS xxx\xxx\DG-LAB-injuryCNN-1.0.0\js> node websocketNode.js
+WebSocket服务已启动，端口：9999
+```  
+5.启动**identify-link.py**并修改此处url(需修改该文件其他某些东西，请访问该目录下**README.md**)  
+6.启动后会出现以下内容
 
 绑定二维码（请使用APP扫码）
 https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#ws://xxx.xx.xx.xx:9999/xxxxxxxxxxxxx  
