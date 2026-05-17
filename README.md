@@ -1,4 +1,5 @@
-# 使用前请先配置好nodejs环境！！！
+# 使用前请先配置好node.js环境！！！
+powershell使用npm version查看是否有该环境
 
 ```
 ├── data
