@@ -8,12 +8,12 @@ import mss
 import pygetwindow as gw
 import time
 
-# ===================== Selenium 浏览器控制（成功方式）=====================
+# ===================== Selenium 浏览器控制=====================
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
 # ===================== 配置 =====================
-GAME_WINDOW_TITLE = "这里改成自己的窗口名” #这里改成自己的窗口名，具体说明看README.md
+GAME_WINDOW_TITLE = "这里改成自己的窗口名” #这里改成自己的窗口名，具体说明看README.md"
 CAPTURE_OFFSET_X = 50   #调节x轴
 CAPTURE_OFFSET_Y = 900 #调节y轴
 CAPTURE_WIDTH = 300   #调节宽度
@@ -22,7 +22,7 @@ LOG_INTERVAL = 10  # 每10秒检测一次
 MODEL_PATH = "../CNN/fps_injury_cnn.pth"
 
 # Selenium 配置
-WEB_URL = "自己的网站地址/index.html" #注意修改此处！！！
+WEB_URL = "http://xxx.x.x.x:xxxx/js/index.html" #注意修改此处！！！
 DELAY_SECONDS = 20  # 打开网页后等待20秒
 
 CLASS_EN = ["No Injury", "Light Injury", "Severe Injury"]
@@ -68,7 +68,28 @@ def init_browser():
     driver.get(WEB_URL)
     print("✅ 网页已打开，请等待连接设备...")
     time.sleep(DELAY_SECONDS)
+# ===================== 全局浏览器驱动 =====================
+def send_waveform():
+    # 发送 A 通道
+    driver.execute_script(f'''
+            sendWsMsg({{
+                type: "clientMsg",
+                channel: "A",
+                "time" : 0,
+                message: "A:[\"0A0A0A0A64646464\",\"0000000000000000\"]"
+            }});
+        ''')
+    time.sleep(1)
 
+    # 发送 B 通道
+    driver.execute_script(f'''
+                sendWsMsg({{
+                    type: "clientMsg",
+                    channel: "B",
+                    "time" : 0,
+                    message: "A:[\"0A0A0A0A64646464\",\"0000000000000000\"]"
+                }});
+            ''')
 
 # =====================  强度发送 =====================
 def send_strength(a, b):
@@ -138,10 +159,13 @@ def main():
                 last_cls = cls  # 更新状态
 
                 if cls == 0:
+                    send_strength()             #发送通道
                     send_strength(0, 0)  # 恒定 0，在这里可以改无伤强度
                 elif cls == 1:
+                    send_strength()             # 发送通道
                     send_strength(30, 30)  # 恒定 30，在这里可以改轻伤强度
                 elif cls == 2:
+                    send_strength()             # 发送通道
                     send_strength(60, 60)  # 恒定 60，在这里可以改重伤强度
 
         cv2.imshow("Control", frame)
