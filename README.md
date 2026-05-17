@@ -10,8 +10,8 @@ powershell使用npm version查看是否有该环境
 │   ├── wwbsocketNode.js(配置文件)
 │   ├── index.html(网页源文件)
 │   ├── node_modules(环境文件)
-│   ├── package.json(配置文件)
-│   └── package-lock.json(配置文件)
+│   ├── package.json(库文件)
+│   └── package-lock.json(锁定版本)
 ```
 # 使用方法
 1.修改wcConnection.js
