@@ -18,8 +18,7 @@ powershell使用npm version查看是否有该环境
 ```
 const LOCAL_IP = "本机ip地址";
 ```
-2.在同一局域网下，使用任意能打开网站的软件(如vscode)打开js文件中的**index.html**,获取自己的url，
- 例如http://xxx.x.x.x:xxxx/index.html,然后关闭此网站  
+2.在同一局域网下，使用任意能打开网站的软件(如vscode)打开js文件中的**index.html**，开放端口获得该端口号,用ipconfig查看ipv4地址(手机连接需要跟电脑同一局域网)
 
 3.将**identify-data**中**identify-link.py**中修改**WEB_URL = "此处改为第一步获取的网站"**
 **GAME_WINDOW_TITLE** = "**此处改为游戏弹窗窗口名**(若不知道，使用**CNN**目录下的**window-game-get.py**获取所有窗口名"
