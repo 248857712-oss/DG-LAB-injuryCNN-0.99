@@ -1,4 +1,4 @@
-# 使用前请先配置好node.js环境！！！
+# 使用前请先配置好node.js环境！！！并安装谷歌浏览器
 powershell使用npm version查看是否有该环境
 
 ```
