@@ -9,7 +9,7 @@ let softAStrength = 0; // A通道软上限缓存
 let softBStrength = 0; // B通道软上限缓存
 
 // 替换为你的电脑局域网IP（执行ipconfig/ifconfig查看）
-const LOCAL_IP = "";  //！！！是ip！例如127.0.0.1
+const LOCAL_IP = "172.20.10.3";
 
 // 反馈消息映射
 const feedBackMsg = {
@@ -49,6 +49,8 @@ function sendWsMsg(data) {
     fangdouSetTimeOut = setTimeout(() => {
         const sendData = {
             type: data.type || 4,
+            channel: data.channel,
+            time: data.time,
             targetId: targetWSId,
             clientId: connectionId,
             message: data.message || "",
@@ -122,14 +124,14 @@ function disconnectWs() {
     wsConn = null;
     connectionId = "";
     targetWSId = "";
-    
+
     // 更新UI状态
     document.getElementById("status").innerText = "已断开";
     document.getElementById("status").className = "red";
     document.getElementById("status-light").className = "red";
     document.getElementById("status-btn").innerText = "连接";
     document.getElementById("status-btn").classList.remove("red-background");
-    
+
     // 重置跟随开关样式
     document.getElementById("follow-a").className = "follow-btn";
     document.getElementById("follow-b").className = "follow-btn";
@@ -154,7 +156,7 @@ function connectWs() {
     wsConn.onopen = function (event) {
         console.log("WebSocket连接已建立");
         showSuccessToast("WebSocket连接成功");
-        
+
         // 更新状态UI
         document.getElementById("status").innerText = "已连接（未绑定）";
         document.getElementById("status").className = "green";
@@ -177,7 +179,7 @@ function connectWs() {
                     // 获取clientId并生成二维码
                     connectionId = message.clientId;
                     console.log("clientId：" + message.clientId);
-                    
+
                     // 生成绑定二维码链接（官方正确格式）
                     const qrUrl = `https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#ws://${LOCAL_IP}:9999/${connectionId}`;
                     document.getElementById("qrcode").innerHTML = `
@@ -194,12 +196,12 @@ function connectWs() {
                         return;
                     }
                     targetWSId = message.targetId;
-                    
+
                     // 更新绑定成功UI
                     document.getElementById("status").innerText = "已绑定设备";
                     document.getElementById("status-btn").innerText = "断开";
                     document.getElementById("status-btn").classList.add("red-background");
-                    
+
                     console.log("绑定APP成功：" + message.targetId);
                     hideqrcode();
                     showSuccessToast("已连接到目标设备");
@@ -272,7 +274,7 @@ function connectWs() {
             showToast("连接断开，尝试重连...");
             setTimeout(connectWs, 3000);
         }
-        
+
         // 重置UI状态
         document.getElementById("status").innerText = "已断开";
         document.getElementById("status").className = "red";
@@ -286,7 +288,7 @@ function connectWs() {
 function sendManualStrength() {
     const aVal = document.getElementById("manual-a").value;
     const bVal = document.getElementById("manual-b").value;
-    
+
     // 验证输入
     if (aVal < 0 || aVal > 100 || bVal < 0 || bVal > 100) {
         showToast("强度值必须在0-100之间");
@@ -297,7 +299,7 @@ function sendManualStrength() {
     sendWsMsg({ type: 4, message: `strength-1+1+${aVal}` });
     // 发送B通道强度
     sendWsMsg({ type: 4, message: `strength-2+1+${bVal}` });
-    
+
     showSuccessToast(`已发送手动强度：A=${aVal}，B=${bVal}`);
 }
 
@@ -328,7 +330,7 @@ window.onload = function () {
         followB.addEventListener("click", function () {
             followBStrength = !followBStrength;
             this.className = followBStrength ? "follow-btn active" : "follow-btn";
-            showToast(`B通道${followBStrength ? '开启' : '关闭'}跟随软上限`);
+            showToast(`B通道${followBStrength ? '关闭' : '关闭'}跟随软上限`);
         });
     }
 
